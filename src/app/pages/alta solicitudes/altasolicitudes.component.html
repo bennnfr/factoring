@@ -1,0 +1,182 @@
+<div class="col-12 animated fadeIn">
+    <div class="card">
+        <div class="card-body animated fadeIn">
+            <form #c="ngForm">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="col-12">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">Cadena</span>
+                                    <input id="cadena" name="cadena" class="form-control" type="text" disabled=true [(ngModel)]="nombrecadena" [ngModelOptions]="{standalone: true}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">Proveedor</span>
+                                    <input id="proveedor" name="proveedor" class="form-control" type="text" disabled=true [(ngModel)]="nombreproveedor" [ngModelOptions]="{standalone: true}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">Moneda *</span>
+                                    <select class="form-control" id="moneda" (click)="muestraxcurr()">
+                                <option *ngFor="let item of currency" >{{ item }} </option>
+                            </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">Porcentaje Operacion *</span>
+                                    <input id="porcentajeoperacion" name="porcentajeoperacion" class="form-control" type="number" ngModel required [(ngModel)]="poperacion" [ngModelOptions]="{standalone: true}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">Fecha Operacion *</span>
+                                    <input id="fechaoperacion" name="fechaoperacion" class="form-control" type="date" ngModel required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">Fecha Factura</span>
+                                    <input id="fechafactura" name="fechafactura" class="form-control" type="date" (blur)="filtrafac()">
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-info" (click)="lipiarcampos()">LIMPIAR</button>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="form-group m-t-20">
+                            <table class="table full-color-table full-info-table hover-table" *ngFor="let item of simulacion">
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <th>Simulador Costo Financiero Cliente</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>Fecha de Operación:</th>
+                                        <td>{{item.used_date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Vencimiento de Operación:</th>
+                                        <td>{{item.due_date}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Plazo en Días:</th>
+                                        <td>{{item.diastranscurridos}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Valor 100% del Documento:</th>
+                                        <td>${{item.total}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Porcentaje Operar:</th>
+                                        <td>{{item.capacity}}%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Importe Real Factoraje:</th>
+                                        <td>${{item.total_used}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Base Anual en Días:</th>
+                                        <td>360</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Intereses a Descontar:</th>
+                                        <td>${{item.interests}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Efectivo Neto:</th>
+                                        <td>${{item.net_amount}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Costo Financiero:</th>
+                                        <td>{{item.financial_cost}}%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group m-t-20">
+                            <table class="table full-color-table full-info-table hover-table" *ngIf="muestratablafirmantes">
+                                <div class="form-check mb-2 ml-2 mt-2">
+                                    <input class="form-check-input" type="checkbox" id="autoSizingCheck" (click)="enableconfirm()">
+                                    <label class="form-check-label" for="autoSizingCheck">
+                                      Autorizado por:
+                                    </label>
+                                </div>
+                                <thead>
+                                    <tr class="bg-primary">
+                                        <th>Firmantes</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of firmantes">
+                                        <td>{{item.firmante}}</td>
+                                    </tr>
+                                </tbody>
+                                <button class="btn btn-info mt-2" (click)="prueba()" [disabled]='confirma'>CONFIRMAR</button>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="muestratabla">
+                    <p-table [columns]="cols" [value]="facturas" selectionMode="multiple" [(selection)]="selectedCars2">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns">
+                                    {{col.header}}
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+                            <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+                                <td *ngFor="let col of columns">
+                                    {{rowData[col.field]}}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <button class="btn btn-outline-info mt-2" (click)="recalculasinfiltro()" [disabled]="c.invalid">Simular</button>
+                </div>
+
+                <div *ngIf="!muestratabla">
+                    <p-table [columns]="cols" [value]="facturasfiltradas" selectionMode="multiple" [(selection)]="selectedCars1">
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th *ngFor="let col of columns">
+                                    {{col.header}}
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+                            <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex">
+                                <td *ngFor="let col of columns">
+                                    {{rowData[col.field]}}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <button class="btn btn-outline-info mt-2" (click)="recalcula()" [disabled]="c.invalid">Simular</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,222 @@
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+
+<div class="col-12 animated fadeIn">
+    <div class="card">
+        <div class="card-body animated fadeIn">
+            <p-table [columns]="cols" [value]="segmentos" selectionMode="single" [(selection)]="selectedCar" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+                <ng-template pTemplate="caption">
+                    {{nombrenegocio}}
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let col of columns">
+                            {{rowData[col.field]}}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="summary" let-rowData>
+                    <div style="text-align:left">
+                        <button type="button" (click)="showDialogToAdd()" class="btn btn-outline-info">Agregar</button>
+                    </div>
+                </ng-template>
+            </p-table>
+
+            <p-dialog header="Segmento" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '600px' }">
+                <div class="p-grid ui-fluid" *ngIf="car">
+                    <div class="p-col-4">
+                        <span style="font-weight:bold">Clave *</span>
+                    </div>
+                    <div class="p-col-12">
+                        <input class="form-control" type="text" id="key" [(ngModel)]="car.key" />
+                    </div>
+                    <div class="p-col-8">
+                        <span style="font-weight:bold">Nombre *</span>
+                    </div>
+                    <div class="p-col-8">
+                        <input class="form-control" type="text" id="name" [(ngModel)]="car.name" />
+                    </div>
+                    <div class="p-col-4">
+                        <span style="font-weight:bold">Fecha inicio *</span>
+                    </div>
+                    <div class="p-col-8">
+                        <input class="form-control" type="date" id="start_date" [(ngModel)]="car.start_date" />
+                    </div>
+                    <div class="p-col-4">
+                        <span style="font-weight:bold">Fecha fin</span>
+                    </div>
+                    <div class="p-col-8">
+                        <input class="form-control" type="date" id="end_date" [(ngModel)]="car.end_date" />
+                    </div>
+                    <div class="p-col-4">
+                        <span style="font-weight:bold">Rate *</span>
+                    </div>
+                    <div class="p-col-8">
+                        <input class="form-control" type="text" id="rate" [(ngModel)]="car.rate" />
+                    </div>
+                    <div class="p-col-4">
+                        <span style="font-weight:bold">Fee *</span>
+                    </div>
+                    <div class="p-col-8">
+                        <input class="form-control" type="text" id="fee" [(ngModel)]="car.fee" />
+                    </div>
+                    <div class="p-col-4">
+                        <label>Capacidad</label>
+                    </div>
+                    <div class="p-col-8">
+                        <input class="form-control" type="text" id="capacity" [(ngModel)]="car.capacity" />
+                    </div>
+                    <div class="p-col-4">
+                        <span style="font-weight:bold">Limite dias *</span>
+                    </div>
+                    <div class="p-col-8">
+                        <input class="form-control" type="text" id="limit_days" [(ngModel)]="car.limit_days" />
+                    </div>
+                    <div class="p-col-4">
+                        <span style="font-weight:bold">Dia expiracion *</span>
+                    </div>
+                    <div class="p-col-8">
+                        <input class="form-control" type="text" id="expiration_day" [(ngModel)]="car.expiration_day" />
+                    </div>
+                    <div class="p-col-4">
+                        <span style="font-weight:bold">Tipo expiracion *</span>
+                    </div>
+                    <div class="p-col-8">
+                        <select *ngIf="car.expiration_type === 'SEMANAL'" class="form-control" id="expiration_type">
+                            <option selected>SEMANAL</option>
+                            <option>MENSUAL</option>
+                          </select>
+                        <select *ngIf="car.expiration_type === 'MENSUAL'" class="form-control" id="expiration_type">
+                            <option>SEMANAL</option>
+                            <option selected>MENSUAL</option>
+                          </select>
+                        <select *ngIf="car.expiration_type !== 'MENSUAL' && car.expiration_type !== 'SEMANAL'" class="form-control" id="expiration_type">
+                            <option selected>SEMANAL</option>
+                            <option>MENSUAL</option>
+                          </select>
+                    </div>
+                    <div class="p-col-4">
+                        <span style="font-weight:bold">Estatus *</span>
+                    </div>
+                    <div class="p-col-8">
+                        <select *ngIf="car.status === 'ACTIVO'" class="form-control" id="status">
+                            <option selected>ACTIVO</option>
+                            <option>INACTIVO</option>
+                          </select>
+                        <select *ngIf="car.status === 'INACTIVO'" class="form-control" id="status">
+                            <option>ACTIVO</option>
+                            <option selected>INACTIVO</option>
+                          </select>
+                        <select *ngIf="car.status !== 'ACTIVO' && car.status !== 'INACTIVO'" class="form-control" id="status">
+                            <option selected>ACTIVO</option>
+                            <option>INACTIVO</option>
+                          </select>
+                    </div>
+                </div>
+                <p-footer>
+                    <div>
+                        <button type="button" class="btn btn-outline-danger" (click)="delete()">Borrar</button>
+                        <button type="button" class="btn btn-outline-info" (click)="save()">Modificar</button>
+                    </div>
+                </p-footer>
+            </p-dialog>
+
+            <p-dialog header="Segmento" [(visible)]="displayDialognuevo" [focusOnShow]="false" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '600px' }">
+                <form (ngSubmit)="save()" #c="ngForm">
+                    <div *ngIf="car">
+                        <div class="p-col-4">
+                            <span style="font-weight:bold">Clave *</span>
+                        </div>
+                        <div class="p-col-8">
+                            <input class="form-control" type="text" id="keyn" name="keyn" ngModel required />
+                        </div>
+                        <div class="p-col-4 mt-2">
+                            <span style="font-weight:bold">Nombre *</span>
+                        </div>
+                        <div class="p-col-8">
+                            <input class="form-control" type="text" id="namen" name="namen" ngModel required />
+                        </div>
+                        <div class="p-col-4 mt-2">
+                            <span style="font-weight:bold">Fecha inicio *</span>
+                        </div>
+                        <div class="p-col-8">
+                            <input class="form-control" type="date" id="start_daten" name="start_daten" ngModel required />
+                        </div>
+                        <div class="p-col-4 mt-2">
+                            <span style="font-weight:bold">Fecha fin</span>
+                        </div>
+                        <div class="p-col-8">
+                            <input class="form-control" type="date" id="end_daten" />
+                        </div>
+                        <div class="p-col-4 mt-2">
+                            <span style="font-weight:bold">Rate *</span>
+                        </div>
+                        <div class="p-col-8">
+                            <input class="form-control" type="number" id="raten" name="raten" ngModel required />
+                        </div>
+                        <div class="p-col-4 mt-2">
+                            <span style="font-weight:bold">Fee *</span>
+                        </div>
+                        <div class="p-col-8">
+                            <input class="form-control" type="number" id="feen" name="feen" ngModel required />
+                        </div>
+                        <div class="p-col-4 mt-2">
+                            <span style="font-weight:bold">Capacidad</span>
+                        </div>
+                        <div class="p-col-8">
+                            <input class="form-control" type="number" id="capacityn" />
+                        </div>
+                        <div class="p-col-4 mt-2">
+                            <span style="font-weight:bold">Limite dias *</span>
+                        </div>
+                        <div class="p-col-8">
+                            <input class="form-control" type="number" id="limit_daysn" name="limit_daysn" ngModel required />
+                        </div>
+                        <div class="p-col-4 mt-2">
+                            <span style="font-weight:bold">Dia expiracion *</span>
+                        </div>
+                        <div class="p-col-8">
+                            <input class="form-control" type="number" id="expiration_dayn" name="expiration_dayn" ngModel required />
+                        </div>
+                        <div class="p-col-4 mt-2">
+                            <span style="font-weight:bold">Tipo expiracion *</span>
+                        </div>
+                        <div class="p-col-8">
+                            <select class="form-control" id="expiration_typen">
+                            <option selected>SEMANAL</option>
+                            <option>MENSUAL</option>
+                          </select>
+                        </div>
+                        <div class="p-col-4 mt-2">
+                            <span style="font-weight:bold">Estatus *</span>
+                        </div>
+                        <div class="p-col-8">
+                            <select class="form-control" id="statusn">
+                            <option selected>ACTIVO</option>
+                            <option>INACTIVO</option>
+                          </select>
+                        </div>
+                    </div>
+                    <p-footer>
+                        <div>
+                            <button id="btnguardanuevo" type="submit" class="btn btn-outline-info mt-3" [disabled]="c.invalid">Guardar</button>
+                        </div>
+                    </p-footer>
+                </form>
+            </p-dialog>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->

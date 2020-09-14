@@ -1,0 +1,100 @@
+<!--<div class="col-12 animated fadeIn">
+    <div class="card">
+        <div class="card-body animated fadeIn">
+            <p-fileUpload name="myfile[]" url="xml()" multiple="multiple" (onchange)="xml()">
+            </p-fileUpload>
+
+            <input type="file" id="file-input" (change)="readFile($event)" />
+
+            <button (click)="xml()">XML</button>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="container">
+    <button type="button" class="btn btn-primary" (click)="show()">Register</button>
+</div>
+<!-- Creates the bootstrap modal where the image will appear -->
+<div [style.display]="showModal ? 'block' : 'none'" class="modal" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Nueva Escritura</h4>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="guardaDireccion()">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">Tipo de Escritura *</span>
+                                    <input id="dpdocument_type" name="dpdocument_type" class="form-control" type="text" ngModel required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">Descripcion *</span>
+                                    <input id="dpdescription" name="dpdescription" class="form-control" type="text" ngModel required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">Numero de Escritura</span>
+                                    <input id="dppd_number" name="dppd_number" class="form-control" type="number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">Libro de la Escritura</span>
+                                    <input id="dppd_book" name="dppd_book" class="form-control" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">Fecha de la Escritura</span>
+                                    <input id="dppd_date" name="dppd_date" class="form-control" type="date">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">RUG</span>
+                                    <input id="dprug" name="dprug" class="form-control" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group m-t-20">
+                                <div class="col-xs-6">
+                                    <span style="font-weight:bold">Anexo del Documento</span>
+                                    <input id="dpdocument" name="dpdocument" class="form-control" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-outline-info">GUARDAR</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal" (click)="hide()">CERRAR</button>
+
+            </div>
+        </div>
+    </div>
+</div>
